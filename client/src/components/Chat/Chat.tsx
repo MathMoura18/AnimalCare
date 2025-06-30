@@ -14,11 +14,13 @@ export default function ChatPopup({ onClose }: { onClose: () => void }) {
 
     if (!aguardandoOpcao) {
       // Mensagem do usuário
-      setMensagens(prev => [
+      setMensagens((prev) => [
         ...prev,
         { texto: `Você: ${msgTrim}`, tipo: 'user' },
-        { texto: '1 - Como Adotar', tipo: 'bot' },
-        { texto: '2 - Dicas de Cuidados de Animais', tipo: 'bot' }
+        {
+          texto: `1 - Como Adotar\n2 - Dicas de Cuidados de Animais`,
+          tipo: 'bot'
+        }
       ]);
       setMensagem('');
       setAguardandoOpcao(true);
