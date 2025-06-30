@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Chat from "../components/Chat/Chat";
 import DoacaoPopup from "../components/Doacao/Doacao";
+import PerfilPopup from '../components/PerfilPopup';
 
 import ".././css/style.css"
 import ".././css/Footer.css"
@@ -10,11 +11,13 @@ import ".././css/Footer.css"
 export const Sobre = () => {
     const [chatVisivel, setChatVisivel] = React.useState(false);
     const [doacaoVisivel, setDoacaoVisivel] = React.useState(false);
+    const [perfilVisivel, setPerfilVisivel] = React.useState(false);
 
     return <>
         <Header
             onChatClick={() => setChatVisivel((v) => !v)}
             onDoacaoClick={() => setDoacaoVisivel((v) => !v)}
+            onPerfilClick={() => setPerfilVisivel((v) => !v)}
         />
         <div className="sobre">
             <h1>Sobre o AnimalCare</h1>
@@ -33,5 +36,6 @@ export const Sobre = () => {
 
         {chatVisivel && <Chat onClose={() => setChatVisivel(false)} />}
         {doacaoVisivel && <DoacaoPopup onClose={() => setDoacaoVisivel(false)} />}
+        {perfilVisivel && <PerfilPopup onClose={() => setPerfilVisivel(false)} />}
     </>
 }

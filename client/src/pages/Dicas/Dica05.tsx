@@ -4,15 +4,19 @@ import Footer from "../../components/Footer";
 import Chat from "../../components/Chat/Chat";
 import DoacaoPopup from "../../components/Doacao/Doacao"
 import '../../css/dicasPages.css';
+import PerfilPopup from '../../components/PerfilPopup';
 
 export const Dica05 = () => {
   const [chatVisivel, setChatVisivel] = React.useState(false);
   const [doacaoVisivel, setDoacaoVisivel] = React.useState(false);
+  const [perfilVisivel, setPerfilVisivel] = React.useState(false);
 
   return <>
     <Header
       onChatClick={() => setChatVisivel((v) => !v)}
       onDoacaoClick={() => setDoacaoVisivel((v) => !v)}
+      onPerfilClick={() => setPerfilVisivel((v) => !v)}
+
     />
     <main className="dica-container">
       <div className="dica-content">
@@ -31,8 +35,8 @@ export const Dica05 = () => {
       </div>
     </main>
     <Footer />
-
     {chatVisivel && <Chat onClose={() => setChatVisivel(false)} />}
     {doacaoVisivel && <DoacaoPopup onClose={() => setDoacaoVisivel(false)} />}
+    {perfilVisivel && <PerfilPopup onClose={() => setPerfilVisivel(false)} />}
   </>
 }

@@ -1,8 +1,30 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext'; // ajuste o caminho se necessário
 import './Doacao.css';
 
 export default function DoacaoPopup({ onClose }: { onClose: () => void }) {
   const [valor, setValor] = useState('');
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDoar = () => {
+    if (!isAuthenticated) {
+      alert("Você precisa estar logado para doar.");
+      navigate('/login'); // redireciona para login
+      return;
+    }
+
+    if (!valor || parseFloat(valor) <= 0) {
+      alert("Insira um valor válido para doar.");
+      return;
+    }
+
+    // Aqui você pode adicionar lógica real de doação com API, se quiser
+    alert("Doação realizada com sucesso!");
+    setValor('');
+    onClose(); // Fecha o popup após a doação
+  };
 
   return (
     <div className="doacao-popup">
@@ -27,7 +49,7 @@ export default function DoacaoPopup({ onClose }: { onClose: () => void }) {
           onChange={(e) => setValor(e.target.value)}
           placeholder="Digite o valor que deseja doar"
         />
-        <button className="doar-btn">
+        <button className="doar-btn" onClick={handleDoar}>
           DOAR R$ {valor ? parseFloat(valor).toFixed(2) : 'XX'}
         </button>
       </div>
