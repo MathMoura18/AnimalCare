@@ -29,6 +29,21 @@ interface CreateCustomerProps {
     patio: string;
 }
 
+interface EditCustomerProps {
+  id: string;
+  name?: string;
+  cpf?: string;
+  dateOfBirth?: string;
+  telephone?: string;
+  email?: string;
+  password?: string;
+  state?: string;
+  zipcode?: string;
+  city?: string;
+  neighborhood?: string;
+  patio?: string;
+}
+
 interface LoginCustomerProps {
     email: string;
     password: string;
@@ -43,6 +58,10 @@ class CustomerService {
         const customers = await prismaClient.customer.findMany();
 
         return customers;
+    };
+        
+    async findCustomerById(id: string) {
+        return await prismaClient.customer.findUnique({ where: { id } });
     };
 
     async loginCustomer({ email, password }: { email: string; password: string }) {
@@ -66,10 +85,6 @@ class CustomerService {
         );
 
         return { accessToken, refreshToken };
-    };
-
-    async findCustomerById(id: string) {
-        return await prismaClient.customer.findUnique({ where: { id } });
     };
 
     async createCustomer({ 
@@ -128,12 +143,58 @@ class CustomerService {
 
         return customer;
     };
-    
-    async deleteCustomer({ id }: DeleteCustomerProps) {
 
-        if(!id){
-            throw new Error("Solicitação inválida.");
+    async editCustomer({ 
+        id,
+        name,
+        cpf,
+        dateOfBirth,
+        telephone,
+        email,
+        password,
+        state,
+        zipcode,
+        city,
+        neighborhood,
+        patio }: EditCustomerProps) {
+
+        const verifyCustomerExist = await prismaClient.customer.findUnique({
+            where: { id },
+        });
+
+        if (!verifyCustomerExist) {
+            throw new Error(`Usuário de id '${id}' não existe.`)
         }
+
+        const dataToUpdate: any = {
+            ...(name && { name }),
+            ...(cpf && { cpf }),
+            ...(dateOfBirth && { dateOfBirth }),
+            ...(telephone && { telephone }),
+            ...(email && { email }),
+            ...(state && { state }),
+            ...(zipcode && { zipcode }),
+            ...(city && { city }),
+            ...(neighborhood && { neighborhood }),
+            ...(patio && { patio }),
+            updated_at: new Date(),
+        };
+
+        if (password) {
+            const saltRounds = 10;
+            const password_hash = await bcrypt.hash(password, saltRounds);
+            dataToUpdate.password_hash = password_hash;
+        }
+
+        const customer = await prismaClient.customer.update({
+            where: { id },
+            data: dataToUpdate,
+        });
+
+        return customer;
+    };
+
+    async deleteCustomer({ id }: DeleteCustomerProps) {
 
         const findCustomer = await prismaClient.customer.findFirst({
             where:{

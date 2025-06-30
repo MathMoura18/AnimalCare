@@ -20,6 +20,18 @@
   overflow-y: auto;
 }
 
+.perfil-dashboard{
+  margin: 1.75rem;
+}
+
+.button-dashboard{
+  color: white;
+  font-weight: bold;
+}
+
+.button-dashboard:hover{
+  background-color: oklch(48.8% 0.243 264.376);
+}
 
 .perfil-popup h2 {
   font-size: 1.5rem;
@@ -52,4 +64,10 @@
   font-weight: bold;
   border: none;
   cursor: pointer;
+}
+
+.sair-btn:hover{
+  background-color: #991b1b;
+  color: white;
+  font-weight: bold;
 }

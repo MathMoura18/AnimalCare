@@ -41,9 +41,9 @@ export const AppRoutes = () => {
                 } />
                 
                 <Route path='/dashboard' element={
-                    <PrivateRoute>
+                    //<PrivateRoute>
                         <Dashboard />
-                    </PrivateRoute>
+                    //</PrivateRoute>
                 } />
 
                 <Route path='/login' element={<Login />} />

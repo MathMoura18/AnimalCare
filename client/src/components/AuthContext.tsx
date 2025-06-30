@@ -121,7 +121,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   async function refreshTokenIfNeeded(): Promise<void> {
     const token = localStorage.getItem('token');
 
-    if (!token || isTokenExpiringSoon(token)) {
+    if ((!token || isTokenExpiringSoon(token)) && isAuthenticated) {
       try {
         const response = await api.post('/refresh', {}, { withCredentials: true });
         const newAccessToken = response.data;
@@ -155,7 +155,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       withCredentials: true
     };
 
-    return await api.get(url, authConfig);
+    return await api(url, authConfig);
   }
 
   return (

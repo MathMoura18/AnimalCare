@@ -77,6 +77,14 @@ class AnimalService {
         };
     }
 
+    async listAnimalsByUserId(idUser: string) {
+        return await prismaClient.animal.findMany({
+            where: {
+                idUser: idUser,
+                status: "AD",
+            }
+        });
+    }
 
     async createAnimal(idUser: string, animalPicture: any, name: string, age: number, gender: string, size: number, kind: string, race: string, status: string, weight: number, state: string, city: string, description: string) {
         

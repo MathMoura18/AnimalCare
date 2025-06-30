@@ -32,9 +32,7 @@ interface Animal {
 }
 
 interface DecodedToken {
-  id: string;
-  name: string;
-  email: string;
+  userId: string;
   // outros campos, se necessário
 }
 
@@ -51,7 +49,7 @@ export const QueroAdotar = () => {
     const [userCity, setUserCity] = React.useState("");
     const [userState, setUserState] = React.useState("");
 
-    const { role, isAuthenticated, loading } = useAuth();
+    const { role, isAuthenticated, loading, getWithProactiveAuth } = useAuth();
 
     useEffect(() => {
         loadAnimals();
@@ -101,10 +99,16 @@ export const QueroAdotar = () => {
         try {
             const decoded = jwtDecode<DecodedToken>(token);
 
-            // await api.delete("/animal/${animal.id}");
-            //const response = await api.delete("/animal", { params: { id: animalId } });
-            const response = await api.put("/setADAnimal", { params: { id: animalId, idUser: decoded.id } });
+            const objData = {
+                id: animalId,
+                idUser: decoded.userId
+            }
 
+            const response = await getWithProactiveAuth(`/setADAnimal`, {
+                method: "PUT",
+                data: objData,
+            });
+            
             console.log(response);
 
             setAnimalsInSameCity((prev) => prev.filter((a) => a.id !== animalId));
@@ -128,7 +132,7 @@ export const QueroAdotar = () => {
                 <h2>Uma seleção de pets que buscam um lar para chamar de seu.</h2>
             </div>
 
-            {!loading && isAuthenticated && role === 'ong' && (
+            {!loading && isAuthenticated && role?.toUpperCase() === 'ONG' && (
                 <Link to="/AdicionarAnimais" className="fixed-button"
                 >+ Adicionar Animal</Link>
             )}
@@ -186,7 +190,7 @@ export const QueroAdotar = () => {
                 )}
             </div>
 
-            <Footer />
+        <Footer />
 
             {chatVisivel && <Chat onClose={() => setChatVisivel(false)} />}
             {doacaoVisivel && <DoacaoPopup onClose={() => setDoacaoVisivel(false)} />}

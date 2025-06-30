@@ -24,6 +24,20 @@ class AnimalController {
         reply.send(animals);
     }
 
+    async handleListAnimalsByUserId(request: FastifyRequest, reply: FastifyReply){
+
+        const { id } = request.params as any;
+
+        if(!id){
+            throw new Error("Erro: parâmetros inválidos.")
+        }
+
+        const animalService = new AnimalService();
+        const animals = await animalService.listAnimalsByUserId(id);
+
+        reply.send(animals);
+    }
+
     async handleCreateAnimal(request: FastifyRequest, reply: FastifyReply){
 
         const {
@@ -34,7 +48,7 @@ class AnimalController {
             size,
             kind,
             race,
-            status = "disponível",
+            status = "PD",
             weight,
             state,
             city,
@@ -67,7 +81,11 @@ class AnimalController {
     
     async handleSetStatusPDAnimal(request: FastifyRequest, reply: FastifyReply){
 
-        const { id, idUser } = request.query as { id: string, idUser: string };
+        const { id, idUser } = request.body as { id: string, idUser: string };
+
+        if(!id || !idUser){
+            throw new Error("Erro: parâmetros inválidos.")
+        }
 
         const animalService = new AnimalService();
         const animal = await animalService.setStatusPDAnimal({id, idUser});
@@ -77,7 +95,11 @@ class AnimalController {
 
     async handleSetStatusADAnimal(request: FastifyRequest, reply: FastifyReply){
 
-        const { id, idUser } = request.query as { id: string, idUser: string };
+        const { id, idUser } = request.body as { id: string, idUser: string };
+
+        if(!id || !idUser){
+            throw new Error("Erro: parâmetros inválidos.")
+        }
 
         const animalService = new AnimalService();
         const animal = await animalService.setStatusADAnimal({id, idUser});

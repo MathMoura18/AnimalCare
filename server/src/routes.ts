@@ -12,12 +12,20 @@ export async function routes(fastify: FastifyInstance, options: FastifyPluginOpt
         return new CustomerController().handleListCustomers(request, reply);
     });
 
+    fastify.get("/customer/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+        return new CustomerController().handleFindCustomerById(request, reply);
+    });
+
     fastify.post("/customer", async (request: FastifyRequest, reply: FastifyReply) => {
         return new CustomerController().handleCreateCustomer(request, reply);
     });
 
     fastify.post("/loginCustomer", async (request: FastifyRequest, reply: FastifyReply) => {
         return new CustomerController().handleLoginCustomer(request, reply);
+    });
+
+    fastify.put("/customer/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+        return new CustomerController().handleEditCustomer(request, reply);
     });
 
     fastify.delete("/customer", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -48,6 +56,10 @@ export async function routes(fastify: FastifyInstance, options: FastifyPluginOpt
 
     fastify.get("/animalsByLocation", async (request: FastifyRequest, reply: FastifyReply) => {
         return new AnimalController().handleListAnimalsByLocation(request, reply);
+    });
+
+    fastify.get("/animals/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+        return new AnimalController().handleListAnimalsByUserId(request, reply);
     });
 
     fastify.post("/animal", async (request: FastifyRequest, reply: FastifyReply) => {
