@@ -21,14 +21,12 @@ interface CardProps {
 }
 
 export default function Card({ animal }: CardProps) {
-    if (animal.status == 'AD') {
-        return (
-            <div className="QAdotarDashboard w-[250px]">
-                <img src={animal.imageUrl} alt={animal.name} className="QAdotar-img" />
-                <div className="QAdotar-info">
-                    <h3>{animal.name}</h3>
-                </div>
+    return (
+        <div className="QAdotarDashboard w-[250px]">
+            <img src={animal.imageUrl} alt={animal.name} className="QAdotar-img" />
+            <div className="QAdotar-info">
+                <h3>{animal.name}</h3>
             </div>
-        );
-    }
+        </div>
+    );
 }

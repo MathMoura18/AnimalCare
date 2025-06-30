@@ -80,8 +80,7 @@ class AnimalService {
     async listAnimalsByUserId(idUser: string) {
         return await prismaClient.animal.findMany({
             where: {
-                idUser: idUser,
-                status: "AD",
+                idUser: idUser
             }
         });
     }
@@ -111,18 +110,18 @@ class AnimalService {
         const imageUrl = data.publicUrl;
 
         if(idUser){
-            const user = await prismaClient.customer.findFirst({
+            const user = await prismaClient.ong.findFirst({
                 where: {
                     id: idUser  
                 }
             });
             
             if(!user){
-                throw new Error("Usuário não encontrado.")
+                throw new Error("ONG não encontrado.")
             }
 
         } else {
-            throw new Error("Usuário não encontrado.")
+            throw new Error("ONG não encontrado.")
         }
 
         const animal = await prismaClient.animal.create({

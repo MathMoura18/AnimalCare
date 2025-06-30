@@ -16,6 +16,21 @@ interface CreateOngProps {
     patio: string;
 }
 
+interface EditOngProps {
+    corporateName: string;
+    cnpj: string;
+    name: string;
+    representative: string;
+    contact: string;
+    email: string;
+    password: string;
+    state: string;
+    zipcode: string;
+    city: string;
+    neighborhood: string;
+    patio: string;
+}
+
 class OngController {
     async handleListOngs(request: FastifyRequest, reply: FastifyReply){
 
@@ -23,6 +38,18 @@ class OngController {
         const ongs = await ongService.listOngs();
 
         reply.send(ongs);
+    }
+
+    async handleFindOngById(request: FastifyRequest, reply: FastifyReply){
+
+        const { id } = request.params as { id: string };
+
+        if (!id) throw new Error("O campo 'id' é obrigatório.");
+
+        const ongService = new OngService();
+        const ong = await ongService.findOngById(id);
+
+        reply.send(ong);
     }
 
     async handleLoginOng(request: FastifyRequest, reply: FastifyReply){
@@ -77,15 +104,54 @@ class OngController {
         reply.send(ong);
     }
     
-    // async handleSetStatusPDOng(request: FastifyRequest, reply: FastifyReply){
+    async handleEditOng(request: FastifyRequest, reply: FastifyReply) {
+        const { id } = request.params as { id: string };
+        console.log(id);
+        if(!id){
+            throw new Error("O parâmetro 'id' é obrigatório")
+        }
 
-    //     const { id } = request.query as { id: string };
+        const { 
+            corporateName,
+            cnpj,
+            name,
+            representative,
+            contact,
+            email,
+            password,
+            state,
+            zipcode,
+            city,
+            neighborhood,
+            patio } = request.body as EditOngProps;
 
-    //     const ongService = new OngService();
-    //     const ong = await ongService.setStatusPDOng({id});
+        if (password) {
+            // Validações da senha
+            if (!/[a-z]/.test(password)) throw new Error("A senha deve ter pelo menos 1 letra minúscula.");
+            if (!/[A-Z]/.test(password)) throw new Error("A senha deve ter pelo menos 1 letra maiúscula.");
+            if (!/[0-9]/.test(password)) throw new Error("A senha deve ter pelo menos 1 número.");
+            if (!/[^a-zA-Z0-9\s]/.test(password)) throw new Error("A senha deve ter pelo menos 1 caractere especial.");
+        }
 
-    //     reply.send(ong);
-    // }
+        const ongService = new OngService();
+        const updatedCustomer = await ongService.editOng({
+            id,
+            corporateName,
+            cnpj,
+            name,
+            representative,
+            contact,
+            email,
+            password,
+            state,
+            zipcode,
+            city,
+            neighborhood,
+            patio
+        });
+
+        return reply.send(updatedCustomer);
+    }
 
     async handleDeleteOng(request: FastifyRequest, reply: FastifyReply){
 

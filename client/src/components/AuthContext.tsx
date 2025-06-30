@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const storedRole = localStorage.getItem('userRole');
+    const storedRole = localStorage.getItem('role');
 
     if (token) {
       setIsAuthenticated(true);
@@ -121,7 +121,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   async function refreshTokenIfNeeded(): Promise<void> {
     const token = localStorage.getItem('token');
 
-    if ((!token || isTokenExpiringSoon(token)) && isAuthenticated) {
+    if (!token || isTokenExpiringSoon(token)) {
       try {
         const response = await api.post('/refresh', {}, { withCredentials: true });
         const newAccessToken = response.data;

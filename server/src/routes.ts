@@ -37,8 +37,16 @@ export async function routes(fastify: FastifyInstance, options: FastifyPluginOpt
         return new OngController().handleListOngs(request, reply);
     });
 
+    fastify.get("/ong/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+        return new OngController().handleFindOngById(request, reply);
+    });
+
     fastify.post("/loginOng", async (request: FastifyRequest, reply: FastifyReply) => {
         return new OngController().handleLoginOng(request, reply);
+    });
+
+    fastify.put("/ong/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+        return new OngController().handleEditOng(request, reply);
     });
 
     fastify.post("/ong", async (request: FastifyRequest, reply: FastifyReply) => {

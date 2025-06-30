@@ -159,7 +159,7 @@ class CustomerService {
         patio }: EditCustomerProps) {
 
         const verifyCustomerExist = await prismaClient.customer.findUnique({
-            where: { id },
+            where: { id: id },
         });
 
         if (!verifyCustomerExist) {

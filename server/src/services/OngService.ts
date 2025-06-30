@@ -50,8 +50,20 @@ interface LoginOngProps {
     password: string;
 }
 
-interface PutOngProps {
+interface EditOngProps {
     id: string;
+    corporateName: string;
+    cnpj: string;
+    name: string;
+    representative: string;
+    contact: string;
+    email: string;
+    password: string;
+    state: string;
+    zipcode: string;
+    city: string;
+    neighborhood: string;
+    patio: string;
 }
 
 interface DeleteOngProps {
@@ -64,6 +76,10 @@ class OngService {
 
         return ongs;
     };
+
+    async findOngById(id: string) {
+        return await prismaClient.ong.findUnique({ where: { id } });
+    }
 
     async loginOng({ email, password }: { email: string; password: string }) {
         const ong = await prismaClient.ong.findFirst({
@@ -91,10 +107,6 @@ class OngService {
 
         return { accessToken, refreshToken };
   }
-
-    async findOngById(id: string) {
-        return await prismaClient.ong.findUnique({ where: { id } });
-    }
 
     async createOng({ corporateName, cnpj, name, representative, contact, email, password, state, zipcode, city, neighborhood, patio }: CreateOngProps) {
 
@@ -139,33 +151,57 @@ class OngService {
         }
     }
 
-    // async setStatusPDOng({ id }: PutOngProps) {
+    async editOng({ 
+        id,
+        corporateName,
+        cnpj,
+        name,
+        representative,
+        contact,
+        email,
+        password,
+        state,
+        zipcode,
+        city,
+        neighborhood,
+        patio }: EditOngProps) {
 
-    //     if(!id){
-    //         throw new Error("Solicitação inválida.");
-    //     }
+        const verifyOngExist = await prismaClient.ong.findUnique({
+            where: { id: id },
+        });
 
-    //     const findOng = await prismaClient.ong.findFirst({
-    //         where:{
-    //             id: id
-    //         }
-    //     });
+        if (!verifyOngExist) {
+            throw new Error(`ONG de id '${id}' não existe.`)
+        }
 
-    //     if(!findOng){
-    //         throw new Error("Ong não existe.");
-    //     }
+        const dataToUpdate: any = {
+            ...(name && { name }),
+            ...(corporateName && { corporateName }),
+            ...(cnpj && { cnpj }),
+            ...(representative && { representative }),
+            ...(contact && { contact }),
+            ...(email && { email }),
+            ...(state && { state }),
+            ...(zipcode && { zipcode }),
+            ...(city && { city }),
+            ...(neighborhood && { neighborhood }),
+            ...(patio && { patio }),
+            updated_at: new Date(),
+        };
 
-    //     await prismaClient.ong.update({
-    //         where:{
-    //             id: findOng.id
-    //         },
-    //         data: {
-    //             status: "PD"
-    //         }
-    //     });
+        if (password) {
+            const saltRounds = 10;
+            const password_hash = await bcrypt.hash(password, saltRounds);
+            dataToUpdate.password_hash = password_hash;
+        }
 
-    //     return {message: `Ong ${findOng.name} (${findOng.id}) colocado para adoção com sucesso!`};
-    // }
+        const customer = await prismaClient.ong.update({
+            where: { id },
+            data: dataToUpdate,
+        });
+
+        return customer;
+    };
     
     async deleteOng({ id }: DeleteOngProps) {
 

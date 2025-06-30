@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Chat from "../components/Chat/Chat";
 import DoacaoPopup from "../components/Doacao/Doacao";
 import PerfilPopup from '../components/PerfilPopup';
+import { jwtDecode } from "jwt-decode";
 
 import "../css/AdicionarAnimais.css";
 
@@ -39,6 +40,11 @@ const States = [
     { nome: 'Sergipe', sigla: 'SE' },
     { nome: 'Tocantins', sigla: 'TO' },
 ];
+
+interface DecodedToken {
+  userId: string;
+  role: string;
+}
 
 export const AdicionarAnimais = () => {
     const navigate = useNavigate();
@@ -124,9 +130,13 @@ export const AdicionarAnimais = () => {
     async function handlePetSubmit(event: React.FormEvent) {
         event.preventDefault();
 
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        const decoded = jwtDecode<DecodedToken>(token);
+
         const formData = new FormData();
 
-        formData.append("idUser", petFormData.idUser);
+        formData.append("idUser", decoded.userId);
         formData.append("name", petFormData.name);
         formData.append("age", petFormData.age);
         formData.append("gender", petFormData.gender);
@@ -237,16 +247,6 @@ export const AdicionarAnimais = () => {
                                     {States.map(est => (
                                         <option key={est.sigla} value={est.nome}>{est.nome}</option>
                                 ))}
-                                </select>
-                        </div>
-                        <div>
-                            <label className="block text-gray-700 mb-2" htmlFor="idUser">Usuario de Cadastro <span className="text-red-500">*</span></label>
-                            <select id="idUser" value={petFormData.idUser} onChange={handlePetSelectChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                                    <option value="" disabled>Selecione o Usuário</option>
-                                    <option value="68571fc6e25a5d59755d3d5c">Douglas</option>
-                                    <option value="6850ad402fb6173f647ab3ad">Edson</option>
-                                    <option value="6840ac17c96ef7a9fbb0e0d7">Moura</option>
                                 </select>
                         </div>
                         <div>
