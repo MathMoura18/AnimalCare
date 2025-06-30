@@ -12,8 +12,9 @@ import PerfilPopup from '../components/PerfilPopup';
 
 import { api } from "../services/api";
 import { useAuth } from '../components/AuthContext';
-import ".././css/Card.css"
-import ".././css/style.css"
+
+import ".././css/Card.css";
+import ".././css/style.css";
 
 interface Animal {
     id: string;
@@ -32,8 +33,7 @@ interface Animal {
 }
 
 interface DecodedToken {
-  userId: string;
-  // outros campos, se necessário
+    userId: string;
 }
 
 export const QueroAdotar = () => {
@@ -48,6 +48,9 @@ export const QueroAdotar = () => {
 
     const [userCity, setUserCity] = React.useState("");
     const [userState, setUserState] = React.useState("");
+
+    const [termoVisivel, setTermoVisivel] = React.useState(false);
+    const [termoAceito, setTermoAceito] = React.useState(false);
 
     const { role, isAuthenticated, loading, getWithProactiveAuth } = useAuth();
 
@@ -93,6 +96,11 @@ export const QueroAdotar = () => {
     }
 
     async function handleAdotar(animalId: string) {
+        if (!termoAceito) {
+            setTermoVisivel(true);
+            return;
+        }
+
         const token = localStorage.getItem("token");
         if (!token) return;
 
@@ -102,19 +110,21 @@ export const QueroAdotar = () => {
             const objData = {
                 id: animalId,
                 idUser: decoded.userId
-            }
+            };
 
             const response = await getWithProactiveAuth(`/setADAnimal`, {
                 method: "PUT",
                 data: objData,
             });
-            
+
             console.log(response);
 
             setAnimalsInSameCity((prev) => prev.filter((a) => a.id !== animalId));
             setAnimalsInOtherCities((prev) => prev.filter((a) => a.id !== animalId));
 
             setAnimalSelecionado(null);
+            setTermoVisivel(false);
+            setTermoAceito(false);
         } catch (error) {
             console.error("Erro ao adotar animal:", error);
         }
@@ -133,8 +143,7 @@ export const QueroAdotar = () => {
             </div>
 
             {!loading && isAuthenticated && role?.toUpperCase() === 'ONG' && (
-                <Link to="/AdicionarAnimais" className="fixed-button"
-                >+ Adicionar Animal</Link>
+                <Link to="/AdicionarAnimais" className="fixed-button">+ Adicionar Animal</Link>
             )}
 
             <div className="QAdotar-container" style={{ display: "flex", flexDirection: "column", gap: "3rem" }}>
@@ -180,7 +189,7 @@ export const QueroAdotar = () => {
                         <div className="animal-list" style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem" }}>
                             {animalsInOtherCitiesAndStates.map((animal, index) => (
                                 <Card
-                                    key={`state-${index}`}
+                                    key={`state2-${index}`}
                                     animal={animal}
                                     onClick={() => setAnimalSelecionado(animal)}
                                 />
@@ -190,12 +199,26 @@ export const QueroAdotar = () => {
                 )}
             </div>
 
-        <Footer />
+            <Footer />
 
             {chatVisivel && <Chat onClose={() => setChatVisivel(false)} />}
             {doacaoVisivel && <DoacaoPopup onClose={() => setDoacaoVisivel(false)} />}
             {perfilVisivel && <PerfilPopup onClose={() => setPerfilVisivel(false)} />}
-            {animalSelecionado && (<AnimalPopup animal={animalSelecionado} onClose={() => setAnimalSelecionado(null)} onAdotar={handleAdotar} />)}
+            {animalSelecionado && (
+                <AnimalPopup
+                    animal={animalSelecionado}
+                    onClose={() => {
+                        setAnimalSelecionado(null);
+                        setTermoVisivel(false);
+                        setTermoAceito(false);
+                    }}
+                    onAdotar={handleAdotar}
+                    termoVisivel={termoVisivel}
+                    termoAceito={termoAceito}
+                    setTermoAceito={setTermoAceito}
+                    setTermoVisivel={setTermoVisivel}
+                />
+            )}
         </>
     );
-}
+};

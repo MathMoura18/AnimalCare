@@ -1,5 +1,5 @@
-import ".././css/style.css"
-import ".././css/Card.css"
+import ".././css/style.css";
+import ".././css/Card.css";
 
 interface Animal {
     imageUrl: string;
@@ -22,9 +22,9 @@ interface CardProps {
 }
 
 export default function Card({ animal, onClick }: CardProps) {
-    if (animal.status == 'PD') {
+    if (animal.status === 'PD') {
         return (
-            <div className="QAdotar" onClick={onClick}>
+            <div className="QAdotar" onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
                 <img src={animal.imageUrl} alt={animal.name} className="QAdotar-img" />
                 <div className="QAdotar-info">
                     <h3>{animal.name}</h3>
@@ -34,4 +34,5 @@ export default function Card({ animal, onClick }: CardProps) {
             </div>
         );
     }
+    return null;
 }
