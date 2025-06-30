@@ -1,5 +1,5 @@
 import ".././css/style.css"
-import ".././css/Card.css"
+import ".././css/CardDashBoard.css"
 
 interface Animal {
     imageUrl: string;
@@ -22,10 +22,11 @@ interface CardProps {
 
 export default function Card({ animal }: CardProps) {
     return (
-        <div className="QAdotarDashboard w-[250px]">
-            <img src={animal.imageUrl} alt={animal.name} className="QAdotar-img" />
-            <div className="QAdotar-info">
-                <h3>{animal.name}</h3>
+        <div className="animal-card">
+            <img src={animal.imageUrl} alt={animal.name} className="animal-image" />
+            <div className="animal-info">
+                <h3 className="animal-name">{animal.name}</h3>
+                {/* Se quiser, pode adicionar mais info aqui */}
             </div>
         </div>
     );

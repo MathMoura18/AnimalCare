@@ -33,7 +33,6 @@
 /* QAdotar individual */
 .QAdotar {
   background-color: #bebebe;
-  border: 2px solid #ccc;
   border-radius: 1rem;
   width: calc(25% - 1.5rem); /* 4 por linha com gap */
   display: flex;
