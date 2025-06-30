@@ -122,3 +122,27 @@
 }
 }
 
+.chat-msg.user {
+  background-color: #5a5a5a;
+  color: #ffc107;
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  max-width: 80%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  align-self: flex-end;
+  font-size: 0.95rem;
+}
+
+.chat-msg.bot {
+  background-color: #3f3f3f;
+  color: #e5a000;
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  max-width: 80%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  align-self: flex-start; 
+  font-size: 0.95rem;
+}
+
