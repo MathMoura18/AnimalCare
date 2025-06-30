@@ -106,7 +106,7 @@ class OngController {
     
     async handleEditOng(request: FastifyRequest, reply: FastifyReply) {
         const { id } = request.params as { id: string };
-        console.log(id);
+        
         if(!id){
             throw new Error("O parâmetro 'id' é obrigatório")
         }

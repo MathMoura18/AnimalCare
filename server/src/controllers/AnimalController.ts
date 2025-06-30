@@ -38,6 +38,50 @@ class AnimalController {
         reply.send(animals);
     }
 
+    async handleEditAnimal(request: FastifyRequest, reply: FastifyReply){
+
+        const { id } = request.params as { id: string };
+        
+        if(!id){
+            throw new Error("O parâmetro 'id' é obrigatório")
+        }
+
+        const {
+            name,
+            age,
+            gender,
+            size,
+            kind,
+            race,
+            weight,
+            state,
+            city,
+            description,
+            animalPicture
+        } = request.body as any;
+
+        if(!id){
+            throw new Error("Preencha todos os campos.")
+        }
+
+        const animalService = new AnimalService();
+        const animal = await animalService.editAnimal(
+            id,
+            animalPicture,
+            name.value,
+            Number(age.value),
+            gender.value,
+            Number(size.value),
+            kind.value,
+            race.value,
+            Number(weight.value),
+            state.value,
+            city.value,
+            description.value );
+
+        reply.send(animal);
+    }
+
     async handleCreateAnimal(request: FastifyRequest, reply: FastifyReply){
 
         const {
@@ -109,8 +153,7 @@ class AnimalController {
 
     async handleDeleteAnimal(request: FastifyRequest, reply: FastifyReply){
 
-        const { id } = request.query as { id: string };
-        console.log(id);
+        const { id } = request.params as { id: string };
 
         const animalService = new AnimalService();
         const animal = await animalService.deleteAnimal({id});

@@ -426,10 +426,19 @@ export const Dashboard = () => {
 
               <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem" }}>
                 {animalsByUserId.map((animal, index) => (
-                  <CardDashboard
-                    key={`${index}`}
-                    animal={animal}
-                  />
+                  userRoleCustomer ? (
+                    <CardDashboard
+                      key={`${index}`}
+                      animal={animal}
+                      role='customer'
+                    />
+                  ): userRoleOng ? (
+                    <CardDashboard
+                      key={`${index}`}
+                      animal={animal}
+                      role='ong'
+                    />
+                  ): "" 
                 ))}
               </div>
             </div>

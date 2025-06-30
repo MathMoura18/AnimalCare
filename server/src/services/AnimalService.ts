@@ -149,6 +149,78 @@ class AnimalService {
         }
     }
 
+    async editAnimal(id: string, animalPicture: any, name: string, age: number, gender: string, size: number, kind: string, race: string, weight: number, state: string, city: string, description: string) {
+        
+        let imageUrl;
+        if (animalPicture){
+            const fileBuffer = await animalPicture.toBuffer();
+            const fileExtension = animalPicture.filename.split('.').pop();
+            const fileName = `${randomUUID()}.${fileExtension}`;
+
+            const { error } = await supabase.storage
+                .from('animals')
+                .upload(fileName, fileBuffer, {
+                contentType: animalPicture.mimetype,
+            });
+
+            if (error) {
+                console.log(error);
+                throw new Error("Erro ao fazer upload da imagem.")
+            }
+
+            // Gerar URL pública
+            const { data } = supabase.storage
+                .from('animals')
+                .getPublicUrl(fileName);
+
+            imageUrl = data.publicUrl;
+        }
+        
+        if (id){
+            const animal = await prismaClient.animal.findFirst({
+                where: {
+                    id: id  
+                }
+            });
+            
+            if(!animal){
+                throw new Error("Animal não encontrado.")
+            }
+
+        } else {
+            throw new Error("Animal não encontrado.")
+        }
+
+        const dataToUpdate: any = {
+            ...(name && { name }),
+            ...(imageUrl && { imageUrl }),
+            ...(age && { age }),
+            ...(gender && { gender }),
+            ...(size && { size }),
+            ...(kind && { kind }),
+            ...(state && { state }),
+            ...(race && { race }),
+            ...(weight && { weight }),
+            ...(state && { state }),
+            ...(city && { city }),
+            ...(description && { description  }),
+            updated_at: new Date(),
+        };
+
+        const animal = await prismaClient.animal.update({
+            where:{
+                id: id
+            },
+            data: dataToUpdate
+        });
+
+        if(animal){
+            return { message: 'Animal alterado com sucesso!' };
+        } else {
+            throw new Error("Erro ao criar o animal.")
+        }
+    }
+
     async setStatusPDAnimal({ id, idUser }: PutPDAnimalProps) {
 
         if(!id || !idUser){
