@@ -1,22 +1,35 @@
 import { useAuth } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
+import "../css/PerfilPopup.css";
 
-import "../css/PerfilPopup.css"; // Crie ou adicione estilo aqui conforme desejar
 
 export default function PerfilPopup({ onClose }: { onClose: () => void }) {
   const { user, role, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleVerMais = () => {
+    navigate("/perfil"); // Redireciona para a página de informações completas
+    onClose(); // Fecha o popup
+
+  };
 
   return (
     <div className="perfil-popup-overlay">
       <div className="perfil-popup">
-        <h2>Perfil</h2>
-        <p><strong>Nome:</strong> {user?.name}</p>
-        <p><strong>{role === 'ong' ? "CNPJ:" : "CPF:"}</strong> {role === 'ong' ? user?.cnpj : user?.cpf}</p>
-        <p><strong>Email:</strong> {user?.email}</p>
-        <p><strong>Cidade:</strong> {user?.city}</p>
+        <div className="perfil-header">
+          <h2>Perfil</h2>
+          <button className="close-btn" onClick={onClose}>×</button>
+        </div>
 
-        <div className="perfil-popup-actions">
-          <button onClick={logout} className="sair-btn">Sair da Conta</button>
-          <button onClick={onClose} className="fechar-btn">X</button>
+        <div className="perfil-popup-content">
+          <p><strong>Nome:</strong> {role === "ong" ? user?.corporateName : user?.name}</p>
+          <p><strong>Email:</strong> {user?.email}</p>
+
+          <div className="perfil-popup-actions">
+            <button onClick={handleVerMais} className="info-btn">Ver mais informações</button>
+            <button onClick={logout} className="sair-btn">Sair da Conta</button>
+          </div>
+
         </div>
       </div>
     </div>

@@ -36,7 +36,7 @@ export default function Navbar({ onChatClick, onDoacaoClick, onPerfilClick }: Na
                 </Link>
 
                 {isAuthenticated ? (
-                    <button onClick={onPerfilClick} className="Perfil">
+                    <button onClick={onPerfilClick} className="Perfil hover:cursor-pointer">
                         Perfil
                     </button>
                 ) : (

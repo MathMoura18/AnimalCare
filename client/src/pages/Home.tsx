@@ -29,7 +29,7 @@ export const Home = () => {
         />
 
         <div className="card-container">
-            <div className="card">
+            <div className="card-dicas">
                 <div className="imagem">
                     <img src="AnimalCare/Images/Luna.jpg" alt="imagem" />
                 </div>
@@ -41,7 +41,7 @@ export const Home = () => {
                 </div>
             </div>
 
-            <div className="card">
+            <div className="card-dicas">
                 <div className="imagem">
                     <img src="AnimalCare/Images/Caramelo.jpg" alt="imagem" />
                 </div>
@@ -54,7 +54,7 @@ export const Home = () => {
                 </div>
             </div>
 
-            <div className="card">
+            <div className="card-dicas">
                 <div className="imagem">
                     <img src="AnimalCare/Images/Laranjinha.jpg" alt="imagem" />
                 </div>
@@ -66,7 +66,7 @@ export const Home = () => {
                 </div>
             </div>
 
-            <div className="card">
+            <div className="card-dicas">
                 <div className="imagem">
                     <img src="AnimalCare/Images/Foguete.jpg" alt="imagem" />
                 </div>
@@ -79,7 +79,7 @@ export const Home = () => {
                 </div>
             </div>
 
-            <div className="card">
+            <div className="card-dicas">
                 <div className="imagem">
                     <img src="AnimalCare/Images/Gato.jpg" alt="imagem" />
                 </div>
@@ -92,7 +92,7 @@ export const Home = () => {
                 </div>
             </div>
 
-            <div className="card">
+            <div className="card-dicas">
                 <div className="imagem">
                     <img src="AnimalCare/Images/Max.jpg" alt="imagem" />
                 </div>

@@ -1,0 +1,53 @@
+.body-perfil{
+    background-color: #a0a0a0;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    margin-right: 25rem;
+    margin-left: 25rem;
+}
+
+.header h1{
+    color: #ffc107;
+    background-color: #3f3f3f;
+    padding: 1em;
+    border: 4px;
+}
+
+.perfis {
+    padding: 2rem;
+    color: black;
+    margin-bottom: 2rem;
+}
+
+.perfil-item {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.card-exemplo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    margin-top: 0.5rem;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.card {
+    width: 160px !important;
+    height: 160px !important;
+    background-color: white;
+    border: 2px solid #ffc107;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    color: #3f3f3f;
+    box-sizing: border-box;
+}

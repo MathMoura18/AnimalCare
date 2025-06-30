@@ -21,11 +21,25 @@ interface TokenPayload {
 }
 
 interface Usuario {
-  name: string;
-  cpf?: string;
-  cnpj?: string;
+  // Campos comuns
   email: string;
   city: string;
+  state?: string;
+  neighborhood?: string;
+  patio?: string;
+  zipcode?: string;
+
+  // Campos do Tutor
+  name?: string;
+  cpf?: string;
+  dateOfBirth?: string;
+  telephone?: string;
+
+  // Campos da ONG
+  corporateName?: string;
+  cnpj?: string;
+  representative?: string;
+  contact?: string;
 }
 
 interface AuthContextType {
@@ -55,23 +69,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     if (token) {
       setIsAuthenticated(true);
-    
-    if (storedRole) {
-      setRole(storedRole);
-    }
 
-    api.get("/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        setUser(response.data);
+      if (storedRole) {
+        setRole(storedRole);
+      }
+
+      api.get("/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .catch((error) => {
-        console.error("Erro ao buscar dados do usuário:", error);
-        logout();
-      });
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar dados do usuário:", error);
+          logout();
+        });
     }
     setLoading(false);
   }, []);
@@ -121,7 +135,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   async function refreshTokenIfNeeded(): Promise<void> {
     const token = localStorage.getItem('token');
 
-    if (!token || isTokenExpiringSoon(token)) {
+    if ((!token || isTokenExpiringSoon(token)) && isAuthenticated) {
       try {
         const response = await api.post('/refresh', {}, { withCredentials: true });
         const newAccessToken = response.data;
@@ -155,7 +169,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       withCredentials: true
     };
 
-    return await api.get(url, authConfig);
+    return await api(url, authConfig);
   }
 
   return (

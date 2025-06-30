@@ -12,8 +12,9 @@ import { Dica04 } from './pages/Dicas/Dica04';
 import { Dica05 } from './pages/Dicas/Dica05';
 import { Dica06 } from './pages/Dicas/Dica06';
 
+import { Perfil } from './pages/Perfil'; // se ainda não adicionou
+
 // import PrivateRoute from './components/PrivateRoute'
-import { AdicionarAnimais } from "./pages/AdicionarAnimais";
 
 // Footer
 import { Sobre } from './pages/Sobre';
@@ -33,12 +34,13 @@ export const AppRoutes = () => {
                 <Route path="/dica-5" element={<Dica05 />} />
                 <Route path="/dica-6" element={<Dica06 />} />
 
+                <Route path='/perfil' element={<Perfil />} />
 
                 <Route path='/ongs' element={<Ongs />} />
                 <Route path='/adotar' element={
                     <QueroAdotar />
                 } />
-                
+
                 <Route path='/login' element={<Login />} />
                 <Route path='/create-account' element={<CreateAccount />} />
 
@@ -48,7 +50,6 @@ export const AppRoutes = () => {
 
                 <Route path='*' element={<Navigate to='/' />} />
 
-                <Route path="/AdicionarAnimais" element={<AdicionarAnimais />} />
             </Routes>
 
         </BrowserRouter>
